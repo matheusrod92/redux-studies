@@ -1,26 +1,57 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {
+  // connect,
+  Provider,
+  useDispatch,
+  useSelector
+} from 'react-redux';
 
-function App() {
+import initStore from './store';
+
+const store = initStore();
+
+function Container() {
+  const dispatch = useDispatch()
+  const click = useSelector(state => state.getIn(['reducer', 'click']));
+  const onClick = () => dispatch({ type: 'clicou no botao' });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <button onClick={onClick}>click</button>
+      {click}
     </div>
   );
 }
+
+// // setter
+// const mapDispatchToProps = (dispatch) => ({
+//   clickedButton: () => {
+//     dispatch({ type: 'clicou no botao' });
+//   }
+// });
+
+// // getter
+// const mapStateToProps = (state) => ({
+//   click: state.getIn(['reducer', 'click']),
+// });
+
+
+// const ConnectedContainer = connect(mapStateToProps, mapDispatchToProps)(Container);
+
+function App() {
+  return (
+    <Provider store={store}>
+      <Container />
+    </Provider>
+  );
+}
+
+/**
+ * ImmutableMap ({
+ *   reducer: ImmutableMap ({
+ *     click: true,
+ *   })
+ * })
+ */
 
 export default App;
